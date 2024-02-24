@@ -3,14 +3,14 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 3001;
 const TelegramBot = require("node-telegram-bot-api");
-require("dotenv").config();
+require('dotenv').config();
 
 // make sure env changes are done
 const bot = new TelegramBot(process.env.token_paytm, {
   polling: false,
 });
 
-const apiUrl = "https://insider.in/search?q=INDIA%20VS%20AFGHANISTAN";
+const apiUrl = "https://insider.in/search?q=IPL";
 const headers = {
   "Accept-Language": "en-GB,en-US;q=0.9,en;q=0.8",
   Connection: "keep-alive",
@@ -62,10 +62,12 @@ function pollApi() {
       .get(apiUrl, data, { headers })
       .then((response) => {
         let isTicketsAvailable = response.data.includes(
-          "IDFC FIRST Bank T20I Trophy, 3rd T20I"
+          "CSK VS RCB"
         );
         if (isTicketsAvailable) {
           bot.sendMessage(chatId, `Is available ${isTicketsAvailable}`);
+        } else {
+          console.log(`no tickets`)
         }
       })
       .catch((error) => {
